@@ -16,7 +16,7 @@ COPY . .
 # Expose the port used by the back-end (adjust if necessary)
 EXPOSE 4000
 
-ENV VITE_API_BASE_URL=https://backend.konsulent2000.com/
+ENV VITE_API_BASE_URL=https://public.kode24.no/
 
 # Run the start script from the root package.json
 CMD ["yarn", "start"]
