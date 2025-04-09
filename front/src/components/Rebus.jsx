@@ -8,6 +8,7 @@ export default function Rebus({
   setProgress,
   user,
   hoveredTask,
+  tasks,
 }) {
   const [answers, setAnswers] = useState([
     [0, 0, 0, 0, '', '', '', '', '', 0],
@@ -104,7 +105,7 @@ export default function Rebus({
     updated.find((row, index) => {
       const word = row.join('');
       if (word.length === 10) {
-        fetch('/submit-word', {
+        fetch('/backend/submit-word', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -117,14 +118,8 @@ export default function Rebus({
           .then((data) => {
             if (data.correct) {
               // update completed
-
-              const updatedProgress = [
-                ...progress,
-                {
-                  word_index: index,
-                  word: word.replaceAll('0', ''),
-                },
-              ];
+              console.log(data);
+              const updatedProgress = [...progress, data];
               setProgress(updatedProgress);
               setCanAnimate((prev) => {
                 const newCanAnimate = [...prev];
@@ -148,7 +143,7 @@ export default function Rebus({
 
   const handleSubmit = async (wordIndex) => {
     try {
-      const response = await fetch('/submit-word', {
+      const response = await fetch('/backend/submit-word', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -197,6 +192,8 @@ export default function Rebus({
                 hoveredTask === wordIndex
                   ? 'scale-110 transition-all shadow brightness-160'
                   : ''
+              } ${
+                !tasks[wordIndex] ? 'opacity-50' : ''
               } grid grid-cols-10`}
             >
               {canAnimate[wordIndex] && (
@@ -233,7 +230,12 @@ export default function Rebus({
                   onBlur={(e) => {
                     e.target.value = e.target.value.slice(0, 1); // Limit to 10 characters
                   }}
-                  disabled={letter === 0 || isCompleted || !user}
+                  disabled={
+                    letter === 0 ||
+                    isCompleted ||
+                    !user ||
+                    !tasks[wordIndex]
+                  }
                   placeholder={letter === 0 ? ' ' : ''}
                 />
               ))}

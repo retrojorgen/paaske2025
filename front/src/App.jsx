@@ -15,7 +15,7 @@ function App() {
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const tasksResponse = await fetch('/tasks', {
+      const tasksResponse = await fetch('/backend/tasks', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -25,7 +25,7 @@ function App() {
     };
     fetchTasks();
     const loginUser = async () => {
-      const response = await fetch('/login', {
+      const response = await fetch('/backend/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -41,7 +41,7 @@ function App() {
 
   const setLoggedInUser = async (user) => {
     setUser(user);
-    const progressResponse = await fetch('/progress', {
+    const progressResponse = await fetch('/backend/progress', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -69,6 +69,7 @@ function App() {
             setProgress={setProgress}
             hoveredTask={hoveredTask}
             user={user}
+            tasks={tasks}
           />
         </div>
         <div className="col-span-2">

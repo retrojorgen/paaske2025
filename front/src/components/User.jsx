@@ -57,7 +57,7 @@ export const User = ({ user, progress, setHoveredTask }) => {
             <p className="bg-red-100 p-2 rounded">
               {' '}
               Du har løst alle oppgavene! Gratulerer! Men du har
-              dessverre ikke løst dem innenfor tidsfristen, så du er
+              dessverre ikke løst alle innenfor tidsfristen, så du er
               ikke med i hovedpremie-trekkingen.
             </p>
           )}

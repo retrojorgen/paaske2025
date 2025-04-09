@@ -1,10 +1,12 @@
 @import "tailwindcss";
 
-html,body {
+html, body {
   background-color: #222324;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive; /* Set Comic Sans as the font */
 }
 
 .glow {
   text-shadow: 0 0 10px rgba(255, 255, 0, 0.8), 0 0 20px rgba(255, 255, 0, 0.6),
     0 0 30px rgba(255, 255, 0, 0.4);
 }
+

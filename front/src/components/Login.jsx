@@ -5,7 +5,7 @@ export default function Login({ onLogin }) {
   const [username, setUsername] = useState('');
 
   const handleLogin = () => {
-    fetch('/login', {
+    fetch('/backend/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -17,8 +17,9 @@ export default function Login({ onLogin }) {
 
   return (
     <div className="flex flex-col gap-2 border border-yellow-700 rounded p-4">
-      <h2 className="text-2xl font-bold text-yellow-400">
-        Logg inn for å delta!
+      <h2 className="text-2xl font-bold text-yellow-400 text-center">
+        Logg inn / lag bruker <br />
+        for å delta!
       </h2>
       <input
         placeholder="E-post"

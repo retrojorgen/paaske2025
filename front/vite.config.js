@@ -9,4 +9,13 @@ export default defineConfig({
     outDir: '../back/public', // Set the build output directory
     emptyOutDir: true, // Ensure the directory is cleared before building
   },
+  server: {
+    proxy: {
+      '/backend/': {
+        target: 'http://localhost:4000', // Proxy API requests to localhost:4000
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/backend/, '/'), // Keep the '/backend' prefix
+      },
+    },
+  },
 });
