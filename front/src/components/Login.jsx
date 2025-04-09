@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
 
   const handleLogin = () => {
-    fetch('/backend/login', {
+    fetch(`${apiBaseUrl}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',

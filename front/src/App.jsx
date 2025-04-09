@@ -5,6 +5,7 @@ import { User } from './components/User';
 import Tasks from './components/Tasks';
 
 import StarfieldCanvas from './components/Starfield';
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
   const [user, setUser] = useState(null);
@@ -15,7 +16,7 @@ function App() {
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const tasksResponse = await fetch('/backend/tasks', {
+      const tasksResponse = await fetch(`${apiBaseUrl}/tasks`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -25,7 +26,7 @@ function App() {
     };
     fetchTasks();
     const loginUser = async () => {
-      const response = await fetch('/backend/login', {
+      const response = await fetch(`${apiBaseUrl}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -41,7 +42,7 @@ function App() {
 
   const setLoggedInUser = async (user) => {
     setUser(user);
-    const progressResponse = await fetch('/backend/progress', {
+    const progressResponse = await fetch(`${apiBaseUrl}/progress`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',

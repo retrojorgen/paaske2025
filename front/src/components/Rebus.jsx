@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Explosion from 'react-canvas-confetti/dist/presets/explosion';
-
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const NUM_WORDS = 8;
 
 export default function Rebus({
@@ -105,7 +105,7 @@ export default function Rebus({
     updated.find((row, index) => {
       const word = row.join('');
       if (word.length === 10) {
-        fetch('/backend/submit-word', {
+        fetch(`${apiBaseUrl}/submit-word`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -143,7 +143,7 @@ export default function Rebus({
 
   const handleSubmit = async (wordIndex) => {
     try {
-      const response = await fetch('/backend/submit-word', {
+      const response = await fetch(`${apiBaseUrl}/submit-word`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

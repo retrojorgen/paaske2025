@@ -14,7 +14,7 @@ export default defineConfig({
       '/backend/': {
         target: 'http://localhost:4000', // Proxy API requests to localhost:4000
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/backend/, '/'), // Keep the '/backend' prefix
+        rewrite: (path) => path.replace(/^\/backend/, ''), // Keep the '/backend' prefix
       },
     },
   },
