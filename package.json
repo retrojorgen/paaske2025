@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "start": "cd front && yarn install && yarn build && cd ../back && yarn install && node index.js"
+  }
+}
