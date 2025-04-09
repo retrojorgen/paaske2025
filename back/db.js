@@ -49,6 +49,15 @@ module.exports = {
     return result.rows;
   },
 
+  getUserProgressItem: async (userId, index) => {
+    const result = await pool.query(
+      'SELECT * FROM progress WHERE user_id = $1 AND word_index = $2',
+      [userId, index]
+    );
+    if (result.rows.length > 0) return result.rows[0];
+    return null;
+  },
+
   checkAndSaveWord: async (userId, index, word) => {
     if (word.toLowerCase() === CORRECT_WORDS[index].toLowerCase()) {
       await pool.query(

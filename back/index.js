@@ -40,13 +40,13 @@ app.post('/loginfromuserid', async (req, res) => {
 
 const CORRECT_WORDS_DATES = [
   '2025-04-09',
-  '2025-04-07',
-  '2025-04-08',
-  '2025-04-09',
-  '2025-04-09',
-  '2025-04-09',
-  '2025-04-09',
-  '2025-04-09',
+  '2025-04-16',
+  '2025-04-17',
+  '2025-04-18',
+  '2025-04-19',
+  '2025-04-20',
+  '2025-04-21',
+  '2025-04-22',
 ];
 
 // check if two date objects are the same day
@@ -160,7 +160,23 @@ app.post('/submit-word', async (req, res) => {
   const { wordIndex, word } = req.body;
   const userId = req.cookies.user_id;
   const correct = await db.checkAndSaveWord(userId, wordIndex, word);
-  res.json({ correct });
+  const progressItem = await db.getUserProgressItem(
+    userId,
+    wordIndex
+  );
+  if (!correct) {
+    res.status(400).json({ correct: false });
+    return;
+  } else {
+    res.json({
+      ...progressItem,
+      correct: true,
+      isCorrectDate: isSameDay(
+        new Date(progressItem.updated_at),
+        new Date(CORRECT_WORDS_DATES[progressItem.word_index])
+      ),
+    });
+  }
 });
 
 // host html content from public folder

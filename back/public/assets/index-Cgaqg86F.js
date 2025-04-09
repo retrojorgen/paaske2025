@@ -13132,7 +13132,7 @@ Error generating stack: ` +
     const [B, Q] = lt.useState(''),
       [d, Y] = lt.useState(''),
       G = () => {
-        fetch('/login', {
+        fetch('/backend/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -14409,7 +14409,7 @@ Error generating stack: ` +
         N.find((j, R) => {
           const L = j.join('');
           L.length === 10 &&
-            fetch('/submit-word', {
+            fetch('/backend/submit-word', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               credentials: 'include',
@@ -14742,7 +14742,7 @@ Error generating stack: ` +
     lt.useEffect(() => {
       (async () => {
         const j = await (
-          await fetch('/tasks', {
+          await fetch('/backend/tasks', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -14751,7 +14751,7 @@ Error generating stack: ` +
         G(j);
       })(),
         (async () => {
-          const N = await fetch('/login', {
+          const N = await fetch('/backend/login', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               credentials: 'include',
@@ -14763,7 +14763,7 @@ Error generating stack: ` +
     const U = async (S) => {
       B(S);
       const N = await (
-        await fetch('/progress', {
+        await fetch('/backend/progress', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
