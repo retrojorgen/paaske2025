@@ -169,6 +169,4 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-app.listen(4000, () =>
-  console.log('Server running on http://localhost:4000')
-);
+app.listen(4000, () => console.log('Server running on '));

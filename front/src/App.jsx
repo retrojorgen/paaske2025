@@ -15,20 +15,17 @@ function App() {
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const tasksResponse = await fetch(
-        'http://localhost:4000/tasks',
-        {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-        }
-      );
+      const tasksResponse = await fetch('/tasks', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      });
       const tasks = await tasksResponse.json();
       setTasks(tasks);
     };
     fetchTasks();
     const loginUser = async () => {
-      const response = await fetch('http://localhost:4000/login', {
+      const response = await fetch('/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -44,14 +41,11 @@ function App() {
 
   const setLoggedInUser = async (user) => {
     setUser(user);
-    const progressResponse = await fetch(
-      'http://localhost:4000/progress',
-      {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      }
-    );
+    const progressResponse = await fetch('/progress', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    });
     const progressData = await progressResponse.json();
     setProgress(progressData);
   };

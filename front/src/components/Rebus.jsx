@@ -104,7 +104,7 @@ export default function Rebus({
     updated.find((row, index) => {
       const word = row.join('');
       if (word.length === 10) {
-        fetch('http://localhost:4000/submit-word', {
+        fetch('/submit-word', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -148,18 +148,15 @@ export default function Rebus({
 
   const handleSubmit = async (wordIndex) => {
     try {
-      const response = await fetch(
-        'http://localhost:4000/submit-word',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({
-            wordIndex,
-            word: answers[wordIndex],
-          }),
-        }
-      );
+      const response = await fetch('/submit-word', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          wordIndex,
+          word: answers[wordIndex],
+        }),
+      });
       const data = await response.json();
       if (data.correct) {
         alert('Riktig!');
