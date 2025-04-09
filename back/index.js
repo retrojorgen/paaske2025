@@ -40,7 +40,7 @@ app.post('/loginfromuserid', async (req, res) => {
 
 const CORRECT_WORDS_DATES = [
   '2025-04-09',
-  '2025-04-10',
+  '2025-04-07',
   '2025-04-08',
   '2025-04-09',
   '2025-04-09',
@@ -111,10 +111,10 @@ const tasks = [
     'dette er linje 5',
   ],
   [
-    'dette er en oppgave',
-    'dette er neste linje',
-    'dette er linje tre',
-    'dette er linje 6',
+    'Kult at dere skrivi om jobbi.no,',
+    'hak’ke fått lagt inn Tomsconsult der, enno.',
+    'Men det er no rart i artikkelens kode, ',
+    'og pilenes kode bør gi deg et navn i hodet.',
   ],
   [
     'dette er en oppgave',
@@ -123,10 +123,10 @@ const tasks = [
     'dette er linje 7',
   ],
   [
-    'dette er en oppgave',
-    'dette er neste linje',
-    'dette er linje tre',
-    'dette er linje 8',
+    'Hvis du brukær ordet “del” i språket fra artikkel nummer 8280721-fiiire,',
+    'og vil utbasunere hva du har gjort, helt uten å fliiire:',
+    '“Sånn, nå er den X-X-X-X-X-X!”,',
+    'har du også dagens kode, you betch’a!',
   ],
 ];
 // takes a date and check if the date is after the current day
@@ -161,6 +161,12 @@ app.post('/submit-word', async (req, res) => {
   const userId = req.cookies.user_id;
   const correct = await db.checkAndSaveWord(userId, wordIndex, word);
   res.json({ correct });
+});
+
+// host html content from public folder
+app.use(express.static('public'));
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 app.listen(4000, () =>

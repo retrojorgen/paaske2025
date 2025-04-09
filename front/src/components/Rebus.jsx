@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import Explosion from 'react-canvas-confetti/dist/presets/explosion';
 
 const NUM_WORDS = 8;
 
-export default function Rebus({ progress, setProgress, user }) {
+export default function Rebus({
+  progress,
+  setProgress,
+  user,
+  hoveredTask,
+}) {
   const [answers, setAnswers] = useState([
     [0, 0, 0, 0, '', '', '', '', '', 0],
     [0, 0, 0, '', '', '', '', '', '', ''],
@@ -12,6 +18,16 @@ export default function Rebus({ progress, setProgress, user }) {
     [0, '', '', '', '', '', '', 0, 0, 0],
     [0, 0, '', '', '', '', '', 0, 0, 0],
     [0, '', '', '', '', '', '', 0, 0, 0],
+  ]);
+  const [canAnimate, setCanAnimate] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
   ]);
   const [completed, setCompleted] = useState([
     false,
@@ -102,15 +118,28 @@ export default function Rebus({ progress, setProgress, user }) {
             if (data.correct) {
               // update completed
 
-              const updatedCompleted = [...completed];
-              updatedCompleted[index] = getCompletedWordArray(
-                word.replaceAll('0', ''),
-                index
-              );
-              setCompleted(updatedCompleted);
-              alert('Ritigt!');
+              const updatedProgress = [
+                ...progress,
+                {
+                  word_index: index,
+                  word: word.replaceAll('0', ''),
+                },
+              ];
+              setProgress(updatedProgress);
+              setCanAnimate((prev) => {
+                const newCanAnimate = [...prev];
+                newCanAnimate[index] = true;
+                return newCanAnimate;
+              });
             } else {
               alert('Feil, prøv igjen.');
+              setAnswers((prevAnswers) => {
+                const newAnswers = [...prevAnswers];
+                newAnswers[index] = newAnswers[index].map((letter) =>
+                  letter !== 0 ? '' : 0
+                );
+                return newAnswers;
+              });
             }
           });
       }
@@ -154,6 +183,8 @@ export default function Rebus({ progress, setProgress, user }) {
     return letters;
   };
 
+  console.log(hoveredTask);
+
   return (
     <div className="flex flex-col items-center">
       <div className="w-full">
@@ -163,7 +194,17 @@ export default function Rebus({ progress, setProgress, user }) {
             word = isCompleted;
           }
           return (
-            <div key={wordIndex} className="grid grid-cols-10">
+            <div
+              key={wordIndex}
+              className={`${
+                hoveredTask === wordIndex
+                  ? 'scale-110 transition-all shadow brightness-160'
+                  : ''
+              } grid grid-cols-10`}
+            >
+              {canAnimate[wordIndex] && (
+                <Explosion autorun={{ speed: 0.3, duration: 1000 }} />
+              )}
               {word.map((letter, letterIndex) => (
                 <input
                   className={`
@@ -171,15 +212,15 @@ export default function Rebus({ progress, setProgress, user }) {
                     letter !== 0 &&
                     letterIndex !== 4 &&
                     !isCompleted &&
-                    'bg-green-800 border-green-700 text-green-200'
+                    'bg-yellow-800 border-yellow-700 text-yellow-200'
                   }
                   ${letter === 0 ? 'bg-transparent border-0' : ''}
                   ${
                     letterIndex === 4 &&
-                    'bg-green-600 border-green-800'
+                    'bg-yellow-400 border-yellow-800'
                   }
-                    'bg-green-600 border-green-800'
-                  ${isCompleted && letter !== 0 && 'bg-green-100 '}
+                    'bg-yellow-600 border-yellow-800'
+                  ${isCompleted && letter !== 0 && 'bg-yellow-100 '}
 
                 } w-full text-center border font-mono p-2 text-4xl uppercase`}
                   value={letter === 0 ? '' : letter}

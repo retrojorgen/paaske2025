@@ -1,26 +1,30 @@
 import React from 'react';
 
-export default function Tasks({ tasks, progress }) {
+export default function Tasks({ tasks, progress, setHoveredTask }) {
   return (
     <div>
-      <h1 className="text-green-600 text-4xl font-bold text-center p-4">
+      <h1 className="text-yellow-400 text-4xl font-bold text-center p-4">
         Rebusoppgaver
       </h1>
       <div className="grid grid-cols-4 gap-4">
-        {tasks.map((task) => (
+        {tasks.map((task, index) => (
           <div
-            key={task.id}
-            className="border border-green-700 rounded shadow bg-green-800"
+            key={index}
+            className="border border-yellow-700 rounded shadow bg-yellow-800 hover:brightness-120 hover:scale-105 transition-all"
+            onMouseEnter={() => setHoveredTask(index)}
+            onMouseLeave={() => setHoveredTask(null)}
           >
-            <h2 className="bg-green-700 px-2">{task.date}</h2>
-            {task.task.map((item, counter) => (
-              <p
-                key={counter}
-                className="text-green-200 px-2 wrap-break-word"
-              >
-                {item}
-              </p>
-            ))}
+            <h2 className="bg-yellow-400 p-2">{task.date}</h2>
+            <div className="p-2">
+              {task.task.map((item, counter) => (
+                <p
+                  key={counter}
+                  className="text-yellow-200 wrap-break-word"
+                >
+                  {item}
+                </p>
+              ))}
+            </div>
           </div>
         ))}
         {tasks.length < 8 && (

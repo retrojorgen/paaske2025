@@ -16,25 +16,25 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <div className="flex flex-col gap-2 border border-green-700 rounded p-4">
-      <h2 className="text-2xl font-bold text-green-400">
+    <div className="flex flex-col gap-2 border border-yellow-700 rounded p-4">
+      <h2 className="text-2xl font-bold text-yellow-400">
         Logg inn for å delta!
       </h2>
       <input
         placeholder="E-post"
         value={email}
-        className="bg-green-800 text-green-400 px-4 py-2 rounded text-xl"
+        className="bg-yellow-800 text-yellow-400 px-4 py-2 rounded text-xl"
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
         placeholder="Brukernavn"
         value={username}
-        className="bg-green-800 px-4 text-green-400 py-2 rounded text-xl"
+        className="bg-yellow-800 px-4 text-yellow-400 py-2 rounded text-xl"
         onChange={(e) => setUsername(e.target.value)}
       />
       <button
         onClick={handleLogin}
-        className="border border-green-600 text-green-600 px-4 py-2 rounded text-xl hover:bg-green-700 hover:text-green-300 cursor-pointer"
+        className="border border-yellow-600 text-yellow-600 px-4 py-2 rounded text-xl hover:bg-yellow-700 hover:text-yellow-300 cursor-pointer"
       >
         Start konkurranse
       </button>

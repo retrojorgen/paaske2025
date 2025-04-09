@@ -3,3 +3,8 @@
 html,body {
   background-color: #222324;
 }
+
+.glow {
+  text-shadow: 0 0 10px rgba(255, 255, 0, 0.8), 0 0 20px rgba(255, 255, 0, 0.6),
+    0 0 30px rgba(255, 255, 0, 0.4);
+}

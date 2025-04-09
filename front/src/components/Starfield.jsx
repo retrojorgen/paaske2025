@@ -2,9 +2,9 @@ import React, { useRef, useEffect } from 'react';
 
 const StarfieldCanvas = ({ speed }) => {
   const canvasRef = useRef();
-  const starsRef = useRef([]);
+  const objectsRef = useRef([]);
 
-  const NUM_STARS = 250;
+  const NUM_OBJECTS = 250;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -14,94 +14,78 @@ const StarfieldCanvas = ({ speed }) => {
     let height = (canvas.height = window.innerHeight);
     let frame = 0;
 
-    const pastelColors = [
-      '#FFCCCC',
-      '#CCFFCC',
-      '#CCCCFF',
-      '#FFFFCC',
-      '#FFCCFF',
-      '#CCFFFF',
-    ];
+    const emojis = ['🐣', '🥚', '🌷', '🐰', '🌼']; // Easter emojis
 
-    const createStars = () => {
-      starsRef.current = Array.from({ length: NUM_STARS }, () => ({
-        x: Math.random() * width - width / 2,
-        y: Math.random() * height - height / 2,
-        z: Math.random() * width,
-        color:
-          pastelColors[
-            Math.floor(Math.random() * pastelColors.length)
-          ],
-        twinkleOffset: Math.random() * 100,
-      }));
+    const createObjects = () => {
+      objectsRef.current = Array.from(
+        { length: NUM_OBJECTS },
+        () => ({
+          x: Math.random() * width - width / 2,
+          y: Math.random() * height - height / 2,
+          z: Math.random() * width,
+          emoji: emojis[Math.floor(Math.random() * emojis.length)],
+          twinkleOffset: Math.random() * 100,
+        })
+      );
     };
 
-    const updateStars = () => {
-      for (let star of starsRef.current) {
-        star.z -= speed;
+    const updateObjects = () => {
+      for (let obj of objectsRef.current) {
+        obj.z -= speed;
 
         // Simulate diagonal tilt
-        star.x += 0.2 * speed;
-        star.y += 0.1 * speed;
+        obj.x += 0.2 * speed;
+        obj.y += 0.1 * speed;
 
-        if (
-          star.z <= 1 ||
-          star.x > width / 2 ||
-          star.y > height / 2
-        ) {
-          star.x = Math.random() * width - width / 2;
-          star.y = Math.random() * height - height / 2;
-          star.z = width;
+        if (obj.z <= 1 || obj.x > width / 2 || obj.y > height / 2) {
+          obj.x = Math.random() * width - width / 2;
+          obj.y = Math.random() * height - height / 2;
+          obj.z = width;
         }
       }
     };
 
-    const drawStars = () => {
+    const drawObjects = () => {
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, width, height);
 
-      ctx.shadowBlur = 3; // subtle glow
-      for (let star of starsRef.current) {
-        const k = 128.0 / star.z;
+      for (let obj of objectsRef.current) {
+        const k = 128.0 / obj.z;
 
         // ⬆️ Shift upward from center
-        const x = star.x * k + width / 2;
-        const y = star.y * k + height / 2 - height * 0.15;
+        const x = obj.x * k + width / 2;
+        const y = obj.y * k + height / 2 - height * 0.15;
 
         if (x >= 0 && x < width && y >= 0 && y < height) {
-          const size = (1 - star.z / width) * 4;
-          const pixelSize = Math.max(1, Math.floor(size));
+          const size = (1 - obj.z / width) * 24; // Adjust size based on depth
+          ctx.font = `${Math.max(12, size)}px Arial`; // Set font size
 
-          // Reduced twinkle amplitude
-          const twinkle =
-            0.8 + 0.2 * Math.sin((frame + star.twinkleOffset) * 0.05);
-          ctx.globalAlpha = twinkle;
+          // Adjust opacity based on depth (z value)
+          const alpha = Math.max(0, Math.min(1, 1 - obj.z / width)); // Closer objects are more visible
+          ctx.globalAlpha = alpha;
 
-          ctx.shadowColor = star.color;
-          ctx.fillStyle = star.color;
-          ctx.fillRect(x, y, pixelSize, pixelSize);
+          ctx.fillText(obj.emoji, x, y); // Draw emoji
         }
       }
 
-      ctx.globalAlpha = 1;
-      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1; // Reset global alpha
     };
 
     const animate = () => {
       frame++;
-      updateStars();
-      drawStars();
+      updateObjects();
+      drawObjects();
       animationFrameId = requestAnimationFrame(animate);
     };
 
     const handleResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
-      createStars();
+      createObjects();
     };
 
     window.addEventListener('resize', handleResize);
-    createStars();
+    createObjects();
     animate();
 
     return () => {
