@@ -19,7 +19,7 @@ export default function Tasks({ tasks, progress, setHoveredTask }) {
         {tasks.map((task, index) => (
           <div
             key={index}
-            className="border border-yellow-700 rounded shadow bg-yellow-800 hover:brightness-120 hover:scale-105 transition-all"
+            className="col-span-2 lg:col-span-1 border border-yellow-700 rounded shadow bg-yellow-800 hover:brightness-120 hover:scale-105 transition-all"
             onMouseEnter={() => setHoveredTask(index)}
             onMouseLeave={() => setHoveredTask(null)}
           >
@@ -39,7 +39,7 @@ export default function Tasks({ tasks, progress, setHoveredTask }) {
           </div>
         ))}
         {tasks.length < 8 && (
-          <div className="border border-teal-700 rounded shadow bg-teal-800">
+          <div className="col-span-2 lg:col-span-1 border border-teal-700 rounded shadow bg-teal-800">
             <h2 className="bg-teal-700 p-2">KOMMER I MORGEN</h2>
             <p className="text-teal-200 p-2 wrap-break-word">
               Neste oppgave kommer i morgen. Husk å svare på oppgaven
