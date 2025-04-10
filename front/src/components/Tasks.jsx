@@ -1,6 +1,15 @@
 import React from 'react';
 
 export default function Tasks({ tasks, progress, setHoveredTask }) {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('no-NO', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }).format(date);
+  };
+
   return (
     <div>
       <h1 className="text-yellow-400 text-4xl font-bold text-center p-4">
@@ -14,7 +23,9 @@ export default function Tasks({ tasks, progress, setHoveredTask }) {
             onMouseEnter={() => setHoveredTask(index)}
             onMouseLeave={() => setHoveredTask(null)}
           >
-            <h2 className="bg-yellow-400 p-2">{task.date}</h2>
+            <h2 className="bg-yellow-400 p-2">
+              {formatDate(task.date)}
+            </h2>
             <div className="p-2">
               {task.task.map((item, counter) => (
                 <p
@@ -29,8 +40,8 @@ export default function Tasks({ tasks, progress, setHoveredTask }) {
         ))}
         {tasks.length < 8 && (
           <div className="border border-teal-700 rounded shadow bg-teal-800">
-            <h2 className="bg-teal-700 px-2">KOMMER I MORGEN</h2>
-            <p className="text-teal-200 px-2 wrap-break-word">
+            <h2 className="bg-teal-700 p-2">KOMMER I MORGEN</h2>
+            <p className="text-teal-200 p-2 wrap-break-word">
               Neste oppgave kommer i morgen. Husk å svare på oppgaven
               på samme dag for å være med i trekningen.
             </p>

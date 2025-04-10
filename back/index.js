@@ -3,12 +3,23 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const db = require('./db');
-
+const rateLimit = require('express-rate-limit');
 const app = express();
 
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
+
+const globalLimiter = rateLimit.rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: {
+    error: 'Too many requests from this IP, please try again later.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(globalLimiter);
 
 app.post('/login', async (req, res) => {
   const id = req.cookies.user_id;
@@ -79,10 +90,10 @@ app.get('/progress', async (req, res) => {
 
 const tasks = [
   [
-    'dette er en oppgave',
-    'dette er neste linje',
-    'dette er linje tre',
-    'dette er linje 1',
+    'Partnerær det trenger vi alle og en hver',
+    'og første kodeord finner du der',
+    'inspiser sida til dem som blandær stjernetegn og hodeplagg',
+    'da finner du en kylling som gjemmer et lite flagg',
   ],
   [
     'Kult tastatur, på artikkel nummer 80147043,',
@@ -92,10 +103,12 @@ const tasks = [
     'så kan du sjælv skrive dagens burgerkjede.',
   ],
   [
-    'dette er en oppgave',
-    'dette er neste linje',
-    'dette er linje tre',
-    'dette er linje 4',
+    '20 års erfaring, fire års utdanning?',
+    'hvordan skal vi få dette ordet til å si pling?',
+    'Kanskje er du frilans, kanskje fra Troms?',
+    'Kanskje er du Cloud / Devops person? Kanskje er du boms?',
+    'La oss si du er junior i tilegg, og trenger oversikt.',
+    'stikk til denne sida og stapp inn data, så får du kodeord og lønnstatistikk.',
   ],
   [
     'Det ække så ofte dere skriver om hælvette, ',
@@ -105,10 +118,12 @@ const tasks = [
     "[166,112,53,14].map(i=>document.querySelector('figcaption').textContent[i]).join('')",
   ],
   [
-    'dette er en oppgave',
-    'dette er neste linje',
-    'dette er linje tre',
-    'dette er linje 5',
+    'Harru titta litt under panseret på kode24?',
+    'og kanskje funni hesten som får deg til å humre og flire?',
+    'visteru at det også finnes en annen figur',
+    'på samme stedet, som bor i et bur.',
+    'og har du tur, skikkelig flakse flaks',
+    'får du et kodeord straks!',
   ],
   [
     'Kult at dere skrivi om jobbi.no,',
@@ -117,10 +132,10 @@ const tasks = [
     'og pilenes kode bør gi deg et navn i hodet.',
   ],
   [
-    'dette er en oppgave',
-    'dette er neste linje',
-    'dette er linje tre',
-    'dette er linje 7',
+    'Stiling er på ei måte nettsidas klær',
+    'og kode24 har mange, for alle og en hver',
+    'Så titt litt på stilene, og let helt til kilden, skikkelig deep',
+    'så finner du en liten kylling som sier kodeordet med et piip',
   ],
   [
     'Hvis du brukær ordet “del” i språket fra artikkel nummer 8280721-fiiire,',
