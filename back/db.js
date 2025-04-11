@@ -71,3 +71,26 @@ module.exports = {
     return false;
   },
 };
+
+// db.js
+// get username from user table
+async function getProgressByWordIndex(wordIndex) {
+  const query = `
+    SELECT
+      progress.word_index,
+      progress.word,
+      progress.updated_at,
+      users.username
+    FROM progress
+    JOIN users ON progress.user_id = users.id
+    WHERE progress.word_index = $1
+  `;
+  const values = [wordIndex];
+  const result = await pool.query(query, values);
+  return result.rows;
+}
+
+module.exports = {
+  getProgressByWordIndex,
+  // Other database functions...
+};

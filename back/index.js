@@ -49,6 +49,7 @@ app.post('/loginfromuserid', async (req, res) => {
   res.json(user);
 });
 
+/**
 const CORRECT_WORDS_DATES = [
   '2025-04-09',
   '2025-04-16',
@@ -58,6 +59,18 @@ const CORRECT_WORDS_DATES = [
   '2025-04-20',
   '2025-04-21',
   '2025-04-22',
+];
+ */
+
+const CORRECT_WORDS_DATES = [
+  '2025-04-11',
+  '2024-04-16',
+  '2024-04-17',
+  '2024-04-18',
+  '2024-04-19',
+  '2024-04-20',
+  '2024-04-21',
+  '2024-04-22',
 ];
 
 // check if two date objects are the same day
@@ -90,57 +103,57 @@ app.get('/progress', async (req, res) => {
 
 const tasks = [
   [
-    'Partnerær det trenger vi alle og en hver',
-    'og første kodeord finner du der',
-    'inspiser sida til dem som blandær stjernetegn og hodeplagg',
-    'da finner du en kylling som gjemmer et lite flagg',
+    'Partnerær det trenger vi alle og en hver,',
+    'og kode24 har en partnerside, har du vært der? ',
+    'Inspiser sida til dem som i navnet blandær hodeplagg og stjernetegn,',
+    'da finner du en kylling som gjemmer et lite tegn.',
   ],
   [
     'Kult tastatur, på artikkel nummer 80147043,',
     'men åssen blir dette et løsningsord?',
     'Jo, nå skar’ru se:',
-    'Last ned overlay.png og smell det oppå det øverste, ',
+    'Last ned overlay.png og smell det oppå det øverste,',
     'så kan du sjælv skrive dagens burgerkjede.',
   ],
   [
     '20 års erfaring, fire års utdanning?',
-    'hvordan skal vi få dette ordet til å si pling?',
+    'Hvordan skal vi få dette ordet til å si pling?',
     'Kanskje er du frilans, kanskje fra Troms?',
-    'Kanskje er du Cloud / Devops person? Kanskje er du boms?',
+    'Kanskje er du Cloud / Devops-person? Kanskje er du boms?',
     'La oss si du er junior i tilegg, og trenger oversikt.',
-    'stikk til denne sida og stapp inn data, så får du kodeord og lønnstatistikk.',
+    'stikk til kalkulatoren og stapp inn data, så får du kodeord og lønnstatistikk.',
   ],
   [
-    'Det ække så ofte dere skriver om hælvette, ',
+    'Det ække så ofte dere skriver om hælvette,',
     'men når dere gjør det, handler det om arbeidsmarkedet.',
     'Denna snutten på artikkelen bør gjøra suuusen,',
-    'for å finne dagens ord til rebuuusen;',
+    'for å finne dagens ord til rebuuusen:',
     "[166,112,53,14].map(i=>document.querySelector('figcaption').textContent[i]).join('')",
   ],
   [
     'Harru titta litt under panseret på kode24?',
     'og kanskje funni hesten som får deg til å humre og flire?',
-    'visteru at det også finnes en annen figur',
+    'visteru at det også finnes en annen figur,',
     'på samme stedet, som bor i et bur.',
     'og har du tur, skikkelig flakse flaks',
     'får du et kodeord straks!',
   ],
   [
-    'Kult at dere skrivi om jobbi.no,',
+    'Kult at dere har skrivi om jobbi.no,',
     'hak’ke fått lagt inn Tomsconsult der, enno.',
-    'Men det er no rart i artikkelens kode, ',
+    'Men det er no rart i artikkelens kode,',
     'og pilenes kode bør gi deg et navn i hodet.',
   ],
   [
-    'Stiling er på ei måte nettsidas klær',
-    'og kode24 har mange, for alle og en hver',
-    'Så titt litt på stilene, og let helt til kilden, skikkelig deep',
-    'så finner du en liten kylling som sier kodeordet med et piip',
+    'Stiling er på ei måte nettsidas klær,',
+    'og kode24 har mange, for alle og en hver.',
+    'Så titt litt på stilene, og let helt til kilden, skikkelig deep,',
+    'så finner du en liten kylling som sier kodeordet med et piip.',
   ],
   [
-    'Hvis du brukær ordet “del” i språket fra artikkel nummer 8280721-fiiire,',
+    'Hvis du skriver “del” i språket fra artikkel nummer 8280721-fiiire,',
     'og vil utbasunere hva du har gjort, helt uten å fliiire:',
-    '“Sånn, nå er den X-X-X-X-X-X!”,',
+    '“Sånn, nå er den X-X-X-X-X-A!”,',
     'har du også dagens kode, you betch’a!',
   ],
 ];
@@ -192,6 +205,38 @@ app.post('/submit-word', async (req, res) => {
       ),
     });
   }
+});
+
+app.get('/todays-task', async (req, res) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Strip time portion for comparison
+
+  // Find the index of the current date in CORRECT_WORDS_DATES
+  const currentIndex = CORRECT_WORDS_DATES.findIndex((date) => {
+    const correctDate = new Date(date);
+    correctDate.setHours(0, 0, 0, 0); // Strip time portion for comparison
+    return correctDate.getTime() === today.getTime();
+  });
+
+  if (currentIndex === -1) {
+    // No matching date found
+    res.status(404).json({ error: 'No task for today' });
+    return;
+  }
+  // Fetch the task corresponding to the current index
+  const currentTask = tasks[currentIndex];
+
+  // Fetch all progress records for the current word index from the database
+  console.log('current index', currentIndex);
+
+  const progress = await await db.getProgressByWordIndex(
+    currentIndex
+  );
+  res.json({
+    task: currentTask,
+    date: CORRECT_WORDS_DATES[currentIndex],
+    progress: progress,
+  });
 });
 
 // host html content from public folder
