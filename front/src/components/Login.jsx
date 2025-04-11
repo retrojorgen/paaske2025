@@ -7,6 +7,10 @@ export default function Login({ onLogin }) {
   const [username, setUsername] = useState('');
 
   const handleLogin = () => {
+    if (email || username === '') {
+      alert('Fyll ut alle feltene');
+      return;
+    }
     fetch(`${apiBaseUrl}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

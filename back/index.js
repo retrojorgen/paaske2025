@@ -23,6 +23,7 @@ app.use(globalLimiter);
 
 app.post('/login', async (req, res) => {
   const id = req.cookies.user_id;
+
   if (id) {
     const user = await db.getUserFromUserId(id);
     if (user) {
