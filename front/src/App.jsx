@@ -55,15 +55,20 @@ function App() {
     <div className="App p-2 lg:p-8">
       <StarfieldCanvas speed={speed} />
       <div className="grid grid-cols-6 gap-4 lg:gap-8 max-w-6xl mx-auto relative">
-        <h1 className="text-4xl lg:text-7xl uppercase relative col-span-6 text-yellow-200 font-bold text-center shadow-lg glow">
+        <div className="col-span-6">
+        <h1 className="text-4xl lg:text-7xl uppercase relative col-span-6 text-yellow-200 font-bold text-center shadow-lg glow mb-6">
           🐣kode24s påskerebus🐣
         </h1>
+        <p className="text-teal-400 text-center col-span-6 mb-2">
+          Årets rebus er sponset av Capgemini, besøk <a href="https://partner.kode24.no/capgemini" className="underline">partnersiden deres</a> og utforsk deres <a href="https://partner.kode24.no/capgemini" className="underline">ledige stillinger</a>
+        </p>
         <p className="text-yellow-400 text-center col-span-6 mb-4 lg:mb-10">
           Levert, kodet, skrevet, og rebuset av de flinke folka i{' '}
           <a href="https://www.tomsconsult.no" className="underline">
             Toms Consult
           </a>
         </p>
+        </div>
         <div className="col-span-6 lg:col-span-4">
           <Rebus
             progress={progress}

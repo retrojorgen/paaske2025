@@ -104,7 +104,7 @@ app.get('/progress', async (req, res) => {
 
 const tasks = [
   [
-    'Partnerær det trenger vi alle og en hver,',
+    '(SPONSOR) Partnerær det trenger vi alle og en hver,',
     'og kode24 har en partnerside, har du vært der? ',
     'Inspiser sida til dem som i navnet blandær hodeplagg og stjernetegn,',
     'da finner du en kylling som gjemmer et lite tegn.',
