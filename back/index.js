@@ -221,7 +221,7 @@ app.get('/todays-task', async (req, res) => {
 
   if (currentIndex === -1) {
     // No matching date found
-    res.status(404).json({ error: 'No task for today' });
+    res.json({ error: 'No task for today' });
     return;
   }
   // Fetch the task corresponding to the current index
