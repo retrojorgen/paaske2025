@@ -51,6 +51,7 @@ app.post('/loginfromuserid', async (req, res) => {
 });
 
 const CORRECT_WORDS_DATES = [
+  '2025-04-14',
   '2025-04-15',
   '2025-04-16',
   '2025-04-17',
@@ -58,7 +59,6 @@ const CORRECT_WORDS_DATES = [
   '2025-04-19',
   '2025-04-20',
   '2025-04-21',
-  '2025-04-22',
 ];
 /**
 
