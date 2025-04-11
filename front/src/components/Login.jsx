@@ -7,7 +7,7 @@ export default function Login({ onLogin }) {
   const [username, setUsername] = useState('');
 
   const handleLogin = () => {
-    if (email || username === '') {
+    if (email === '' || username === '') {
       alert('Fyll ut alle feltene');
       return;
     }
