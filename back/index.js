@@ -50,7 +50,6 @@ app.post('/loginfromuserid', async (req, res) => {
   res.json(user);
 });
 
-/**
 const CORRECT_WORDS_DATES = [
   '2025-04-09',
   '2025-04-16',
@@ -61,7 +60,7 @@ const CORRECT_WORDS_DATES = [
   '2025-04-21',
   '2025-04-22',
 ];
- */
+/**
 
 const CORRECT_WORDS_DATES = [
   '2025-04-11',
@@ -73,6 +72,7 @@ const CORRECT_WORDS_DATES = [
   '2024-04-21',
   '2024-04-22',
 ];
+*/
 
 // check if two date objects are the same day
 
