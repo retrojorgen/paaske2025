@@ -2,7 +2,7 @@
 
 html, body {
   background-color: #222324;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive; /* Set Comic Sans as the font */
+  font-family: 'Comic Sans MS', 'Comic Sans', -apple-system, Arial, sans-serif; /* Fallback to system fonts */
 }
 
 .glow {
