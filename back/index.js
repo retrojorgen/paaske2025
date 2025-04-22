@@ -4,6 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const db = require('./db');
 const rateLimit = require('express-rate-limit');
+const crypto = require('crypto');
 const app = express();
 
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
@@ -21,16 +22,54 @@ const globalLimiter = rateLimit.rateLimit({
 });
 app.use(globalLimiter);
 
+const ENCRYPTION_KEY = crypto.randomBytes(32);
+console.log(
+  'ENCRYPTION_KEY',
+  ENCRYPTION_KEY.toString('hex'),
+  ENCRYPTION_KEY
+); // Log the encryption key
+const IV_LENGTH = 16; // Initialization vector length
+
+function encrypt(text) {
+  const iv = crypto.randomBytes(IV_LENGTH);
+  const cipher = crypto.createCipheriv(
+    'aes-256-cbc',
+    ENCRYPTION_KEY,
+    iv
+  );
+  let encrypted = cipher.update(text, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  return `${iv.toString('hex')}:${encrypted}`;
+}
+
+function decrypt(text) {
+  const [iv, encryptedText] = text.split(':');
+  const decipher = crypto.createDecipheriv(
+    'aes-256-cbc',
+    ENCRYPTION_KEY,
+    Buffer.from(iv, 'hex')
+  );
+  let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
+  decrypted += decipher.final('utf8');
+  return decrypted;
+}
+
 app.post('/login', async (req, res) => {
   const id = req.cookies.user_id;
 
   if (id) {
-    const user = await db.getUserFromUserId(id);
-    if (user) {
-      res.json(user);
-      return;
+    try {
+      const decryptedId = decrypt(id); // Decrypt the cookie
+      const user = await db.getUserFromUserId(decryptedId);
+      if (user) {
+        res.json(user);
+        return;
+      }
+    } catch (error) {
+      console.error('Failed to decrypt user_id:', error);
     }
   }
+
   const { email, username } = req.body;
   if (!email || !username) {
     res
@@ -38,15 +77,18 @@ app.post('/login', async (req, res) => {
       .json({ error: 'Email and username are required' });
     return;
   }
+
   const user = await db.getOrCreateUser(email, username);
-  res.cookie('user_id', user.id, { httpOnly: true });
+  const encryptedId = encrypt(user.id.toString()); // Encrypt the user ID
+  res.cookie('user_id', encryptedId, { httpOnly: true });
   res.json(user);
 });
 
 app.post('/loginfromuserid', async (req, res) => {
   const { userId } = req.body;
   const user = await db.getOrCreateUser(userId);
-  res.cookie('user_id', user.id, { httpOnly: true });
+  const encryptedId = encrypt(user.id.toString()); // Encrypt the user ID
+  res.cookie('user_id', encryptedId, { httpOnly: true }); // Set encrypted cookie
   res.json(user);
 });
 
@@ -85,7 +127,8 @@ const isSameDay = (date1, date2) => {
 };
 
 app.get('/progress', async (req, res) => {
-  const userId = req.cookies.user_id;
+  const encryptedId = req.cookies.user_id;
+  const userId = decrypt(encryptedId);
   const progress = await db.getUserProgress(userId);
   // check if the user has completed the word on the correct date
   // CURRENT_TIMESTAMP on the progress table must be the same date as the correct words dates
@@ -187,7 +230,8 @@ app.get('/tasks', (req, res) => {
 
 app.post('/submit-word', async (req, res) => {
   const { wordIndex, word } = req.body;
-  const userId = req.cookies.user_id;
+  const encryptedId = req.cookies.user_id;
+  const userId = decrypt(encryptedId);
   const correct = await db.checkAndSaveWord(userId, wordIndex, word);
   const progressItem = await db.getUserProgressItem(
     userId,
